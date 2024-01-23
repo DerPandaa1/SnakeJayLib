@@ -11,11 +11,11 @@ public class Main {
     public static void main(String args[]) {
     	Snake sn = new Snake();
         InitWindow(800, 450, "Snake");
-        SetTargetFPS(60);
+        SetTargetFPS(10);
         sn.init();
         byte i=0;
         while (!WindowShouldClose()) {
-            if (i>=60) {
+            if (i>=100) {
             	ClearBackground(Jaylib.RAYWHITE);
             	sn.loop();
             	i=0;

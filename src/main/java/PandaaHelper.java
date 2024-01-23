@@ -6,14 +6,7 @@ import com.raylib.*;
  *
  */
 public class PandaaHelper {
-	class Pos{
-		int x;
-		int y;
-		public Pos(int x, int y) {
-			this.x=x;
-			this.y=y;
-		}
-	}
+	
 	public static void drawTile(int a, int b) {
 		if(a*25>800 || b*25>450) {
 			throw new IndexOutOfBoundsException();
