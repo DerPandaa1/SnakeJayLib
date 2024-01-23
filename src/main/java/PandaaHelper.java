@@ -20,4 +20,10 @@ public class PandaaHelper {
 		}
 		DrawRectangle(a*25, b+25, 25, 25, Jaylib.BLACK);		
 	}
+	public static void drawApple(int a, int b) {
+		if(a*25>800 || b*25>450) {
+			throw new IndexOutOfBoundsException();
+		}
+		DrawRectangle(a*25, b+25, 25, 25, Jaylib.RED);		
+	}
 }
