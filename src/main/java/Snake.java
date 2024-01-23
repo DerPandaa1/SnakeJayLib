@@ -1,3 +1,5 @@
+import static com.raylib.Raylib.CloseWindow;
+
 import java.util.*;
 
 
@@ -20,11 +22,14 @@ public class Snake {
 		snake.add(new Pos(9, 7));
 		snake.add(new Pos(8, 7));
 		snake.add(new Pos(7, 7));
+		//Schlange bei Start
+		
 		int xRandom = getRandomInt(0,31);
 		int yRandom = getRandomInt(0,17);
 		posApple.x = xRandom;
 		posApple.y = yRandom; 
-//		snake.add(new Pos(xRandom, yRandom));
+        //Apfel-Mechanismus
+		
 	}
 	public void loop() {
 		
@@ -32,14 +37,17 @@ public class Snake {
 			Pos pos = snake.get(i);
 			int x= pos.x;
 			int y = pos.y;
-			
 			PandaaHelper.drawTile(x, y);
+			//Zeichnet für die Koordinaten der Schlange die Blöcke
 		}
 		
-//		Pos posApple = snake.get();
-		move(richtung);
+
+		move(richtung);//Aufruf zur Methode move
+		
+		
 		int xC = posApple.x; 
 		int yC = posApple.y; 
+		//Zwischenschritt fürs Einsammeln vom Apfel
 		PandaaHelper.drawApple(xC, yC);
 	}
 	private void move(String direction) {
@@ -49,10 +57,11 @@ public class Snake {
 		Pos posLast = snake.get(snake.size()-1);
 		int xNeu = posLast.x;
 		int yNeu = posLast.y;
+		//Speichern der letzen Position des Hinterteils der Schlange
 		for (int i = snake.size()-1; i > 0; i--) {
 			snake.get(i).x = snake.get(i-1).x;
 			snake.get(i).y = snake.get(i-1).y;
-			
+			//Bewegt die Schlange
 		}
 		switch (direction) {
 			case "Rechts":
@@ -67,13 +76,15 @@ public class Snake {
 			case "Unten":
 				snake.get(0).y++; 
 				break; 
+				//Navigation
 				
 				
 		}
 		for ( int i = 1; i < snake.size(); i++) {
 			if(isColliding(snake.get(0), snake.get(i))) {
+				CloseWindow();
 				System.out.println("Game Over!");
-				throw new IndexOutOfBoundsException();
+				//Game Over wenn Kopf der Schlange den Körper berührt
 			}
 		}
 		if(isColliding(snake.get(0), posApple)){
@@ -82,7 +93,8 @@ public class Snake {
 			posApple.x = xRandom;
 			posApple.y = yRandom; 
 			snake.add(new Pos(xNeu, yNeu));
-
+            //Respawn Mechanismus des Apfels
+			
 		}
 	}
 	private boolean isColliding(Pos posA, Pos posB) {
@@ -96,7 +108,9 @@ public class Snake {
 	private int getRandomInt(int min, int max) {
 		int diff= max-min;
 		return Math.round(Math.round(Math.random()*diff +min));
+	//Zufallsgenerator für den Apfel (Hat Jannis erstellt, weil er unfassbar genial ist(nicht von Jannis geschrieben worden))
 	}
+	
 	public void KeyRechtsPressed() {
 		if (richtung != "Links") {
 			richtung = "Rechts";
@@ -119,7 +133,7 @@ public class Snake {
 		if (richtung != "Oben") {
 			richtung = "Unten";
 		}
-	
+	// Alle vier: Verhindert Bewegung in die entegegengesetzte Richtung
 	}
 	
 	public class Pos{
