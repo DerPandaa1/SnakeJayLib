@@ -34,7 +34,7 @@ public class Snake {
 			
 			PandaaHelper.drawTile(x, y);
 		}
-		move("Rechts"); 
+		move("Oben"); 
 //		Pos posApple = snake.get();
 		int xC = posApple.x; 
 		int yC = posApple.y; 
@@ -49,6 +49,18 @@ public class Snake {
 		switch (direction) {
 			case "Rechts":
 				snake.get(0).x++;
+				break;
+			case "Links":
+				snake.get(0).x--; 
+				break; 
+			case "Oben":
+				snake.get(0).y--;
+				break;
+			case "Unten":
+				snake.get(0).y++; 
+				break; 
+				
+				
 		}
 	}
 	private boolean isColliding(Pos posA, Pos posB) {
