@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 //FeldGröße 32*18
@@ -70,7 +69,19 @@ public class Snake {
 		int diff= max-min;
 		return Math.round(Math.round(Math.random()*diff +min));
 	}
-
+	public void KeyRechtsPressed() {
+		
+	}
+	public void KeyLinksPressed() {
+		
+	}
+	public void KeyObenPressed() {
+		
+	}
+	public void KeyUntenPressed() {
+		
+	}
+	
 	public class Pos{
 		int x;
 		int y;
