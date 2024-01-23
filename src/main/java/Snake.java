@@ -18,6 +18,7 @@ public class Snake {
 	public void init() {
 		snake.add(new Pos(7, 7));
 		snake.add(new Pos(8, 7));
+		snake.add(new Pos(9, 7));
 		int xRandom = getRandomInt(0,32);
 		int yRandom = getRandomInt(0,18);
 		posApple.x = xRandom;
@@ -26,17 +27,13 @@ public class Snake {
 	}
 	public void loop() {
 		
-		Pos posA = snake.get(0);
-		int xA= posA.x;
-		int yA = posA.y;
-		
-		PandaaHelper.drawTile(xA, yA);
-		
-
-		Pos posB= snake.get(1);
-		int xB = posB.x;
-		int yB = posB.y; 
-		PandaaHelper.drawTile(xB, yB);
+		for (int i = 0; i < snake.size(); i++) {
+			Pos pos = snake.get(i);
+			int x= pos.x;
+			int y = pos.y;
+			
+			PandaaHelper.drawTile(x, y);
+		}
 		
 //		Pos posApple = snake.get();
 		int xC = posApple.x; 
