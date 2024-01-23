@@ -16,9 +16,9 @@ public class Snake {
 		
 	}
 	public void init() {
-		snake.add(new Pos(7, 7));
-		snake.add(new Pos(8, 7));
 		snake.add(new Pos(9, 7));
+		snake.add(new Pos(8, 7));
+		snake.add(new Pos(7, 7));
 		int xRandom = getRandomInt(0,32);
 		int yRandom = getRandomInt(0,18);
 		posApple.x = xRandom;
@@ -34,14 +34,22 @@ public class Snake {
 			
 			PandaaHelper.drawTile(x, y);
 		}
-		
+		move("Rechts"); 
 //		Pos posApple = snake.get();
 		int xC = posApple.x; 
 		int yC = posApple.y; 
 		PandaaHelper.drawApple(xC, yC);
 	}
-	private void Move(String direction) {
-		//TODO
+	private void move(String direction) {
+		for (int i = snake.size()-1; i > 0; i--) {
+			snake.get(i).x = snake.get(i-1).x;
+			snake.get(i).y = snake.get(i-1).y;
+			
+		}
+		switch (direction) {
+			case "Rechts":
+				snake.get(0).x++;
+		}
 	}
 	private boolean isColliding(Pos posA, Pos posB) {
 		//TODO
