@@ -1,20 +1,18 @@
-# Example Maven project for Jaylib
+## Mein Snake-Projekt im Praktikum
 
-You can import this project into IntelliJ or Eclipse.
+Dieses Projekt habe ich während meiner Zeit im Praktikum bei Materna erstellt.
 
-## Use it to run the included examples in IntelliJ
+## Um selbst zu spielen, mache folgende Schritte:
 
-Right-click on the example and select `run`.
+1.Öffne Java
+2.Gehe auf die linke Seite und klicke "import projects"
+3.Wähle ("Git" und dann) "projects from Git" (smart import)
+4.Kicke erneut auf "GitHub"
+5.Schreibe "SnakeJayLib" in das Textfeld im obrigen Bereich und wähle "search"
+6.Klicke auf das Projekt, das jetzt unterhalb des Textes erscheint und wähle next
+7.Klicke auf den Ordner "main" und wähle next, danach erneut next
+8.Nun sollte das Fenster verschiedene Optionen anziegen, hier nur auf "finish" gehen"
+9.Zuletzt wird der Oberordner in der Linken Spalte angezeigt; diesen öffnen und in der Reienfolge 
+"rc/main/java"--> "default package)" --> "Main.java" / "PandaaHelper.java"/ "Snake.java" öffnen
+10. Fertig
 
-## Use it to run the included examples from the command line
-
-    mvn compile exec:java -Dmain.class="examples.HeightMap"
-    mvn compile exec:java -Dmain.class="examples.CubicMap"
-
-## Use it as the basis of your own game.
-
-Edit `Main.java` with your own code.  (You can delete the examples.)  Then
-
-To run:
-
-    mvn compile exec:java
