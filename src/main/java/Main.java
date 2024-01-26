@@ -27,6 +27,7 @@ public class Main {
 		double lastRenderTime = 0;
 		while (!WindowShouldClose()) {
 			draw = Raylib.GetTime() - lastRenderTime > 1 / 10;
+			lastRenderTime = Raylib.GetTime();
 			System.out.println(draw + " " + Raylib.GetTime());
 			if (draw) {
 				Raylib.BeginDrawing();
@@ -34,6 +35,7 @@ public class Main {
 		
 			if (sn.isGameOver) {
 				gameOver(draw);
+				SetTargetFPS(10);
 			} else {
 				if (Raylib.IsKeyDown(KEY_W))
 					key = "UP";
@@ -82,7 +84,7 @@ public class Main {
 			ClearBackground(Jaylib.RED);
 			PandaaHelper.drawGameOver();
 			PandaaHelper.drawRetry();
-			
+			PandaaHelper.drawHighScore(sn.highscore);
 			PandaaHelper.drawEndScore(sn.score);
 		}
 		if (Raylib.IsKeyPressed(Raylib.KEY_ENTER)) {

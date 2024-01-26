@@ -1,6 +1,10 @@
 import static com.raylib.Raylib.*;
 
 import com.raylib.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author <a href="mailto:Alexander.Rathai@Materna.DE">Alexander Rathai</a>
@@ -68,30 +72,30 @@ public class PandaaHelper {
 
 	public static void drawGameOver() {
 		String text = "Game Over";
-		int fontSize = 50;
+		int fontSize = 60;
 		int textWidth = MeasureText(text, fontSize);
 		int screenHeight = GetScreenHeight();
 		int screenWidth = GetScreenWidth();
 		int x = screenWidth / 2 - textWidth / 2;
-		int y = screenHeight / 5 - fontSize / 5;
+		int y = screenHeight / 6 - fontSize / 6;
 		DrawText(text, x, y, fontSize, Jaylib.BLACK);
 
 	}
 
 	public static void drawRetry() {
-		String text = "Press Enter to restart";
+		String text = "Press Enter to retry";
 		int fontSize = 40;
 		int textWidth = MeasureText(text, fontSize);
 		int screenHeight = GetScreenHeight();
 		int screenWidth = GetScreenWidth();
 		int x = screenWidth / 2 - textWidth / 2;
-		int y = screenHeight /2  - fontSize /2 ;
-		DrawText(text, x, y, fontSize, Jaylib.BLACK);
+		int y = screenHeight /2+30  - fontSize /2+30 ;
+		DrawText(text, x, y, fontSize, Jaylib.WHITE);
 	}
 
 	public static boolean drawEndScore(int score) {
 		String text = "Score: " + String.valueOf(score);
-		int fontSize = 60;
+		int fontSize = 40;
 		int textWidth = MeasureText(text, fontSize);
 		int screenWidth = GetScreenWidth();
 		int x = screenWidth / 2 - textWidth / 2;
@@ -101,18 +105,38 @@ public class PandaaHelper {
 		return false;
 
 	}
-//	public static boolean drawHighScore(int size) {
-//		
-//		String text = "Score: " + String.valueOf(score) ;
-//		int fontSize = 50;
-//		int textWidth = MeasureText(text, fontSize);
-//		int screenWidth = GetScreenWidth();
-//		int x = screenWidth / 2 - textWidth / 2;
-//		int screenHeight = GetScreenHeight();
-//		int y = screenHeight / 2 - fontSize / 2;
-//		DrawText(text, x, y, fontSize, Jaylib.BLACK);
-//	    return true;
-//
-//	}
+	public static void drawHighScore(int HighScore) {
+		
+		String text = "Highscore: " + String.valueOf(HighScore) ;
+		int fontSize = 40;
+		int textWidth = MeasureText(text, fontSize);
+		int screenWidth = GetScreenWidth();
+		int x = screenWidth / 2 - textWidth / 2;
+		int screenHeight = GetScreenHeight();
+		int y = screenHeight / 2  - fontSize / 2;
+		DrawText(text, x, y, fontSize, Jaylib.BLACK);
 	
+
 	}
+	public static int getHighscore() {
+		File Highscore = new File("Highscore.txt"); 
+		try {
+			FileReader fr = new FileReader(Highscore);
+			int c;
+			String s="";
+			while( (c = fr.read()) != -1) {
+				s+=(char)c;
+			}
+			return Integer.valueOf(s);
+		}catch(IOException e) {
+			return 0;
+		}
+	}
+	public static void setHighscore(int highscore) {
+		try ( FileWriter writer = new FileWriter( "Highscore.txt")){
+			writer.append(String.valueOf(highscore));
+		} catch (Exception e) {
+			return;
+		}
+	}
+}

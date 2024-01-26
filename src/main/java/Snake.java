@@ -3,6 +3,7 @@ import static com.raylib.Raylib.CloseWindow;
 import java.util.*;
 
 import com.raylib.Jaylib;
+import com.raylib.Raylib;
 
 //FeldGröße 32*18
 
@@ -15,13 +16,12 @@ import com.raylib.Jaylib;
 public class Snake {
 	List<Pos> snake = new ArrayList<Pos>();
 	Pos posApple1 = new Pos(1, 1);
-	Pos posApple2 = new Pos(1, 1);
-	Pos posPowerUp = null;
 	String richtung = "";
 	public boolean isGameOver = false;
 	public int score = snake.size()-3;
-	ArrayList<Integer> highscores;
-    
+	Pos[] PowerUps = new Pos[10];
+	double powerUp2;
+    public int  highscore;
  
 	
 	
@@ -38,10 +38,10 @@ public class Snake {
 		// Schlange bei Start
 
 		
-		int x2Random = getRandomInt(0, 31);
-		int y2Random = getRandomInt(0, 17);
-		posApple2.x = x2Random;
-		posApple2.y = y2Random;
+		int x1Random = getRandomInt(0, 31);
+		int y1Random = getRandomInt(0, 17);
+		posApple1.x = x1Random;
+		posApple1.y = y1Random;
 		// Apfel-Mechanismus
 
 		score = 0;
@@ -60,6 +60,10 @@ public class Snake {
 //				System.exit(1);
 				System.out.println("Game Over!");
 				isGameOver = true;
+			    highscore = PandaaHelper.getHighscore();
+				if (isHighScore(score, highscore)) {
+					PandaaHelper.setHighscore(highscore);
+				}
 				return;
 			}
 			// Zeichnet für die Koordinaten der Schlange die Blöcke
@@ -69,20 +73,32 @@ public class Snake {
 
 		int x1C = posApple1.x;
 		int y1C = posApple1.y;
-		int x2C = posApple2.x;
-		int y2C = posApple2.y;
 		
-		if ( posPowerUp != null) {
-			int x3C = posPowerUp.x;
-			int y3C = posPowerUp.y;
+		if ( PowerUps[0] != null) {
+			int x3C = PowerUps[0].x;
+			int y3C = PowerUps[0].y;
 			PandaaHelper.drawPowerUp(x3C, y3C, Jaylib.BLUE);
 		}
-		
+		if ( PowerUps[1] != null) {
+			int x3C = PowerUps[1].x;
+			int y3C = PowerUps[1].y;
+			PandaaHelper.drawPowerUp(x3C, y3C, Jaylib.WHITE);
+		}
+		if ( PowerUps[2] != null) {
+			int x3C = PowerUps[2].x;
+			int y3C = PowerUps[2].y;
+			PandaaHelper.drawPowerUp(x3C, y3C, Jaylib.GOLD);
+		}
 		PandaaHelper.drawApple(x1C, y1C, Jaylib.RED);
 		// Zwischenschritt fürs Einsammeln vom Apfel
-		PandaaHelper.drawApple(x2C, y2C, Jaylib.GOLD);
+	
 		PandaaHelper.drawCurrentScore(score);
 	
+		
+		if(powerUp2 != 0 && Raylib.GetTime()-powerUp2 > 10) {
+			powerUp2 = 0;
+			Raylib.SetTargetFPS(10);
+		}
 	}
 
 
@@ -119,17 +135,36 @@ public class Snake {
 			if (isColliding(snake.get(0), snake.get(i))) {
 				System.out.println("Game Over!");
 				isGameOver = true;
+			    highscore = PandaaHelper.getHighscore();
+				  if (isHighScore(score, highscore)) {
+						PandaaHelper.setHighscore(highscore);
+					}
 				return;
 				// Game Over wenn Kopf der Schlange den Körper berührt
 			}
 		}
-		if (posPowerUp != null && isColliding(snake.get(0), posPowerUp)) {
-			posPowerUp = null;
+		if (PowerUps[0] != null && isColliding(snake.get(0), PowerUps[0])) {
+			PowerUps[0] = null;
 			score += 10;
-			System.out.println("Score increased to " + score);
+			
+		}
+		if (PowerUps[1] != null && isColliding(snake.get(0), PowerUps[1])) {
+			PowerUps[1] = null;
+			Raylib.SetTargetFPS(5);
+			powerUp2 = Raylib.GetTime();	
+			
+		}
+	    if (PowerUps[2] != null && isColliding(snake.get(0), PowerUps[2])) {
+	        PowerUps[2] = null;		
+		    score += 20;	
 		}
 		if (isColliding(snake.get(0), posApple1)) {
-			//collided with apple
+		        int Powerup = getRandomInt(0, 9);
+				int x3Random = getRandomInt(0, 31);
+				int y3Random = getRandomInt(0, 17);
+					
+				PowerUps[Powerup] = new Pos(x3Random, y3Random);
+		
 			score += 10;
 			System.out.println("Score increased to " + score);
 			int x1Random = getRandomInt(0, 31);
@@ -140,26 +175,7 @@ public class Snake {
 			// Respawn Mechanismus des Apfels
 
 		}
-		if (isColliding(snake.get(0), posApple2)) {
-			//collided with apple
-			
-			int Powerup = getRandomInt(1, 10);
-			if (Powerup == 1 ) {
-				int x3Random = getRandomInt(0, 31);
-				int y3Random = getRandomInt(0, 17);
-					
-				posPowerUp = new Pos(x3Random, y3Random);
-			}
-			
-			score += 20;
-			System.out.println("Score increased to " + score);
-			int x2Random = getRandomInt(0, 31);
-			int y2Random = getRandomInt(0, 17);
-			posApple2.x = x2Random;
-			posApple2.y = y2Random;
-			snake.add(new Pos(xNeu, yNeu));
-			// Respawn Mechanismus des Apfels
-		}
+	
 	}
 
 	
@@ -176,7 +192,8 @@ public class Snake {
 
 	private int getRandomInt(int min, int max) {
 		int diff = max - min;
-		return Math.round(Math.round(Math.random() * diff + min));
+		return Math.round(Math.round(Math.random()*diff + min));
+//		return (int) Math.random()*diff + min;
 		// Zufallsgenerator für den Apfel(Hat Jannis erstellt, weil er unfassbar genial
 		// ist(nicht von Jannis geschrieben worden))
 	}
@@ -209,6 +226,13 @@ public class Snake {
 		// Alle vier: Verhindert Bewegung in die entegegengesetzte Richtung
 	}
 
+	private boolean isHighScore (int score, int HighScore) {
+		if (HighScore < score) {
+	        highscore = score;
+	        return true;
+		}
+		return false;
+	}
 	public class Pos {
 		int x;
 		int y;
