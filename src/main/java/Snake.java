@@ -16,6 +16,7 @@ public class Snake {
 	List<Pos> snake = new ArrayList<Pos>();
 	Pos posApple1 = new Pos(1, 1);
 	Pos posApple2 = new Pos(1, 1);
+	Pos posPowerUp = null;
 	String richtung = "";
 	public boolean isGameOver = false;
 	public int score = snake.size()-3;
@@ -70,25 +71,20 @@ public class Snake {
 		int y1C = posApple1.y;
 		int x2C = posApple2.x;
 		int y2C = posApple2.y;
-	
+		
+		if ( posPowerUp != null) {
+			int x3C = posPowerUp.x;
+			int y3C = posPowerUp.y;
+			PandaaHelper.drawPowerUp(x3C, y3C, Jaylib.BLUE);
+		}
+		
 		PandaaHelper.drawApple(x1C, y1C, Jaylib.RED);
 		// Zwischenschritt fürs Einsammeln vom Apfel
 		PandaaHelper.drawApple(x2C, y2C, Jaylib.GOLD);
 		PandaaHelper.drawCurrentScore(score);
-		
-		int Powerup = (int)(Math.random()*10);{
-			if (Powerup == 1 ); {
-				int x3Random = getRandomInt(0, 31);
-				int y3Random = getRandomInt(0, 17);
-				
-				
-				PandaaHelper.drawPowerUp(x3Random, y3Random, Jaylib.BLUE) ;
-			}
-			
-			
-		}
+	
 	}
- 
+
 
 	private void move(String direction) {
 		if (direction == "") {
@@ -127,6 +123,11 @@ public class Snake {
 				// Game Over wenn Kopf der Schlange den Körper berührt
 			}
 		}
+		if (posPowerUp != null && isColliding(snake.get(0), posPowerUp)) {
+			posPowerUp = null;
+			score += 10;
+			System.out.println("Score increased to " + score);
+		}
 		if (isColliding(snake.get(0), posApple1)) {
 			//collided with apple
 			score += 10;
@@ -141,6 +142,15 @@ public class Snake {
 		}
 		if (isColliding(snake.get(0), posApple2)) {
 			//collided with apple
+			
+			int Powerup = getRandomInt(1, 10);
+			if (Powerup == 1 ) {
+				int x3Random = getRandomInt(0, 31);
+				int y3Random = getRandomInt(0, 17);
+					
+				posPowerUp = new Pos(x3Random, y3Random);
+			}
+			
 			score += 20;
 			System.out.println("Score increased to " + score);
 			int x2Random = getRandomInt(0, 31);
@@ -148,8 +158,7 @@ public class Snake {
 			posApple2.x = x2Random;
 			posApple2.y = y2Random;
 			snake.add(new Pos(xNeu, yNeu));
-			// Respawn Mechanismus des Apfels2
-
+			// Respawn Mechanismus des Apfels
 		}
 	}
 

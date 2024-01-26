@@ -35,7 +35,7 @@ public class PandaaHelper {
 			System.out.printf("x: %d\n y: %d\n", x, y);
 			throw new IndexOutOfBoundsException();
 		}
-//		DrawRectangle(x * 25, y * 25, 25, 25, color);
+		DrawRectangle(x * 25, y * 25, 25, 25, color);
 	}
 
 	public static boolean drawCurrentScore(int score) {
