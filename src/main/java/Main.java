@@ -14,46 +14,81 @@ import static com.raylib.Raylib.IsKeyDown;
 import com.raylib.*;
 
 public class Main {
-static String key="";
+	static String key = "";
+	static boolean started = false;
+	static Snake sn = new Snake();
+
 	public static void main(String args[]) {
-    	Snake sn = new Snake();
-        InitWindow(800, 450, "Snake");
-        SetTargetFPS(10);
-        sn.init();
-        byte i=0;
-        while (!WindowShouldClose()) {
-        	if(IsKeyDown(KEY_W))
-        		key="UP";
-        	if(IsKeyDown(KEY_A))
-        		key="LEFT";
-        	if(IsKeyDown(KEY_S))
-        		key="DOWN";
-        	if(IsKeyDown(KEY_D)) {
-        		key="RIGHT";
-        	}
-            if (i>=100) {
-            	ClearBackground(Jaylib.GREEN);
-            	sn.loop();
-            	i=0;
-            	EndDrawing();
-            	switch( key ) {
-        			case "LEFT":
-        				sn.KeyLinksPressed();
-        				break;
-        			case "RIGHT":
-        				sn.KeyRechtsPressed();
-        				break;
-        			case "UP":
-        				sn.KeyObenPressed();
-        				break;
-        			case "DOWN":
-        				sn.KeyUntenPressed();
-        				break;
-        		}
-            	key="";
-            }
-            i++;
-        }
-        CloseWindow();
-    }
+		InitWindow(800, 450, "Snake");
+		int fps = (9);
+		SetTargetFPS(fps);
+		sn.init();
+		boolean draw = false;
+		double lastRenderTime = 0;
+		while (!WindowShouldClose()) {
+			draw = Raylib.GetTime() - lastRenderTime > 1 / 10;
+			System.out.println(draw + " " + Raylib.GetTime());
+			if (draw) {
+				Raylib.BeginDrawing();
+			}
+		
+			if (sn.isGameOver) {
+				gameOver(draw);
+			} else {
+				if (Raylib.IsKeyDown(KEY_W))
+					key = "UP";
+				if (Raylib.IsKeyDown(KEY_A))
+					key = "LEFT";
+				if (Raylib.IsKeyDown(KEY_S))
+					key = "DOWN";
+				if (Raylib.IsKeyDown(KEY_D)) {
+					key = "RIGHT";
+				}
+				if (!key.isEmpty()) {
+					started = true;
+				}
+				PandaaHelper.drawStartScreen(started);
+				if(draw) {
+					ClearBackground(Jaylib.GREEN);
+				}
+				if(started) {
+					sn.zzzz();
+				}
+				switch (key) {
+				case "LEFT":
+					sn.KeyLinksPressed();
+					break;
+				case "RIGHT":
+					sn.KeyRechtsPressed();
+					break;
+				case "UP":
+					sn.KeyObenPressed();
+					break;
+				case "DOWN":
+					sn.KeyUntenPressed();
+					break;
+				}
+				key = "";
+			}
+			if (draw) {
+				Raylib.EndDrawing();
+			}
+		}
+		CloseWindow();
+	}
+
+	public static void gameOver(boolean draw) {
+		if (draw) {
+			ClearBackground(Jaylib.RED);
+			PandaaHelper.drawGameOver();
+			PandaaHelper.drawRetry();
+			
+			PandaaHelper.drawEndScore(sn.score);
+		}
+		if (Raylib.IsKeyPressed(Raylib.KEY_ENTER)) {
+			sn = new Snake();
+			sn.init();
+			started = false;
+		}
+	}
 }
